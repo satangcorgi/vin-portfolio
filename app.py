@@ -155,7 +155,6 @@ def render_resume():
                 left, mid, right = st.columns([1, 4, 1])
                 with mid:
                     st.image(pix.tobytes("png"), width=display_px)
-            st.caption("Tip: Use your browser’s Print → Save as PDF for a clean print.")
             return
 
     b64 = base64.b64encode(pdf_bytes).decode("utf-8")
