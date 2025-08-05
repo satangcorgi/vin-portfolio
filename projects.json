@@ -1,0 +1,116 @@
+[
+  {
+    "title": "Ball don’t lie, but will stats do? (NBA MVP Prediction)",
+    "slug": "nba-mvp",
+    "blurb": "A statistical journey through NBA history, predicting MVPs from 2005 to 2023 using logistic regression. Model ranks Jokić #1; WS per 48 and playmaking metrics dominate.",
+    "image": "NBA MVP.png",
+    "tags": ["data science", "sports analytics", "logistic regression"],
+    "links": {
+      "Colab": "https://colab.research.google.com/drive/1FfrD_U_OKUZiqatpTnIEWCf0B5Wm4OIv?usp=sharing",
+      "Slides": "https://www.canva.com/design/DAGCIJxQGd4/8Z84yypC8B5P0bFx8XYc9g/view?utm_content=DAGCIJxQGd4&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h08e340b939"
+    }
+  },
+  {
+    "title": "Artisphere – Virtual Museum for Benildean Artists",
+    "slug": "artisphere",
+    "blurb": "A love letter to campus creativity. Artisphere is a digital museum designed with Unreal Engine and Kuula to celebrate Benildean artists in an immersive, accessible 360-degree experience. Built with Unreal Engine; deployed via Kuula.",
+    "image": "artisphereeeee.png",
+    "tags": ["product", "creative tech", "unreal engine"],
+    "links": {
+      "Virtual Tour": "https://kuula.co/share/collection/7KnSm?logo=1&info=1&fs=1&vr=0&sd=1&thumbs=1"
+    }
+  },
+  {
+    "title": "Pokémon Reinforcement Learning Agent (Gen 8 OU)",
+    "slug": "pokemon-rl",
+    "blurb": "An AI agent built with Q-learning that simulates competitive Pokémon battles. The bot learns adaptive, matchup-based strategies using persistent memory and custom rewards. Q-table persists across sessions.",
+    "image": "reinforcement.png",
+    "tags": ["reinforcement learning", "python", "games"],
+    "links": {
+      "GitHub": "https://github.com/satangcorgi/reinforced-pokemon",
+      "Slides": "https://www.canva.com/design/DAGMs1dkBiE/p-FMMOtGm4YFOzJXV7AFiw/edit"
+    }
+  },
+  {
+    "title": "Power BI: Building a Competitive Pokémon Team (Gen 1 to 6)",
+    "slug": "pokemon-teambuilding",
+    "blurb": "A Power BI dashboard that visualizes base stats, megas, and type matchups across generations to construct a balanced and competitive Pokémon team. Interactive filters for type coverage and stat leaders.",
+    "image": "pokemon teambuilding.png",
+    "tags": ["power bi", "data viz", "pokemon"],
+    "links": {
+      "Slides": "https://www.canva.com/design/DAGJGgbiSaU/UEElvKCcZCnqSVd1NSlmRw/view?utm_content=DAGJGgbiSaU&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hada2eba176"
+    }
+  },
+  {
+    "title": "Energrain – Whey Cereal Brand and GTM Strategy",
+    "slug": "energrain",
+    "blurb": "A protein cereal brand built from scratch, including brand identity, nutrition focus, and a go-to-market strategy targeting fitness communities and micro-influencers.",
+    "image": "Energrain (3).png",
+    "tags": ["marketing", "branding", "product"],
+    "links": {
+      "Proposal": "https://www.canva.com/design/DAGIpDlq71Q/dOFVubOwqF691OrytDpE7g/view?utm_content=DAGIpDlq71Q&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h51f4e97c4d"
+    }
+  },
+  {
+    "title": "Napoleon Brandy – Time Actually Tells",
+    "slug": "napoleon-brandy",
+    "blurb": "A controversial ad reimagined into a moving brand story about legacy, maturity, and craftsmanship. Anchored on a narrative of 15 years of earned excellence. Reframed into a time-led quality story; tagline: ‘Time Actually Tells.’",
+    "image": "napoleon brandy.png",
+    "tags": ["advertising", "strategy", "brand", "marketing"],
+    "links": {
+      "Proposal": "https://www.canva.com/design/DAGNPPHPWOg/c0nq4lC9QecV3JDVoZAuoQ/view?utm_content=DAGNPPHPWOg&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hd29c700a4a"
+    }
+  },
+  {
+    "title": "Caption Science – Optimizing Social Media Captions",
+    "slug": "caption-science",
+    "blurb": "An end-to-end BI model for social-media captions across Instagram, TikTok, and Facebook. It mines and standardizes caption attributes, provides reporting and dashboards, tests predictive baselines (AUC ≈ .50–.65), and offers ethically framed optimization guidance—making the limits of caption-only prediction visible while supporting better, data-informed choices",
+    "image": "caption science.png",
+    "tags": ["business intelligence", "nlp", "streamlit"],
+    "links": {
+      "Live App": "https://caption-science.streamlit.app/",
+      "Docs": "https://docs.google.com/document/d/1Yh2aES8NQLnA74r7HV3-FGM767_dpF8qo6tjUK7AYRQ/edit?usp=sharing"
+    }
+  },
+  {
+    "title": "Netflix Case Study – Strategy and Staying Power",
+    "slug": "netflix-strategy",
+    "blurb": "A deep dive into how Netflix defied competition by mastering vertical integration, algorithmic personalization, and global expansion. Frameworks meet foresight (Porter’s Five Forces, value chain, platform strategy).",
+    "image": "netflix png.png",
+    "tags": ["case study", "strategy", "media"],
+    "links": {
+      "Doc": "https://docs.google.com/document/d/1g1Rz0zOWmBkR1MbNUKh67vJCGHgDkIULfrs_Sl4YgF8/edit?usp=sharing"
+    }
+  },
+  {
+    "title": "Benildean Project Matrix – Role-Based KPI Dashboard",
+    "slug": "bpm-dashboard",
+    "blurb": "A Looker Studio dashboard system tailored to student organizations. Tracks project status, member activity, helpdesk queries, and forms submission across roles. 5 KPIs, auto-refresh Looker Studio.",
+    "image": "bpm.png",
+    "tags": ["dashboard", "looker studio", "ops"],
+    "links": {
+      "Dashboard": "https://lookerstudio.google.com/reporting/ad6fc60b-d08c-4690-b496-736f1838aaef",
+      "Slides": "https://www.canva.com/design/DAGj76RMYv0/QFu8oebQbBCrrcQgJlw1EA/view?utm_content=DAGj76RMYv0&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h2f70fbb486"
+    }
+  },
+  {
+    "title": "AI Adoption – What Drives Consumer Behavior?",
+    "slug": "ai-adoption",
+    "blurb": "Survey-based study of AI use and trust in real life applications (n=102). Logistic regression shows intention and trust strongly influence whether people embrace AI.",
+    "image": "ai.png",
+    "tags": ["research", "ai", "logistic regression"],
+    "links": {
+      "Doc": "https://docs.google.com/document/d/1MoAr_h59KR-d-fLRC0wA-9c7HthWR1TA6HOB1mRsr1w/edit?usp=sharing"
+    }
+  },
+  {
+    "title": "PBA TORQUE – Talent Optimization for Basketball",
+    "slug": "pba-torque",
+    "blurb": "A league-wide analytics proposal for the Philippine Basketball Association. Combines draft simulations, talent scores, and lineup optimizations to guide recruitment. Draft sim prototype (notional).",
+    "image": "PBA.png",
+    "tags": ["sports analytics", "proposal", "ai"],
+    "links": {
+      "Doc": "https://docs.google.com/document/d/1NR2oeH0SmABdTaqcloSlsNKCCi9wFP1Y36iUxHz5RxI/edit?usp=sharing"
+    }
+  }
+]
