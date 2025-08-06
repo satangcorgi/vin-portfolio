@@ -20,30 +20,26 @@ RESUME_PATH = ASSETS / "Ta-asan Ralph Vincent - Résumé.pdf"
 SIGNATURE_PATH = ASSETS / "signature1.png"
 
 @st.cache_data
-def load_projects():
-    pj = Path("projects.json")
-    if not pj.exists():
-        st.error(
-            "Missing `projects.json`. Create it in the same folder as this file. "
-            "Also add your PNGs under `assets/`."
-        )
+def load_json_list(path: Path, mtime: float):
+    if not path.exists():
         return []
-    data = json.loads(pj.read_text(encoding="utf-8"))
-    return sorted(data, key=lambda d: d["title"].lower())
-
-@st.cache_data(ttl=60)
-def load_experiences_with_ttl():
-    xp = Path("experiences.json")
-    if not xp.exists():
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+        return data if isinstance(data, list) else []
+    except json.JSONDecodeError as e:
+        st.error(f"Invalid JSON in {path.name}: {e}")
         return []
-    return json.loads(xp.read_text(encoding="utf-8"))
 
-experiences = load_experiences_with_ttl()
+proj_path = Path("projects.json")
+xp_path = Path("experiences.json")
 
-projects = load_projects()
-experiences = load_experiences()
+projects = load_json_list(proj_path, proj_path.stat().st_mtime if proj_path.exists() else 0)
+experiences = load_json_list(xp_path, xp_path.stat().st_mtime if xp_path.exists() else 0)
 
 st.sidebar.title("Explore Projects")
+if st.sidebar.button("↻ Refresh data"):
+    st.cache_data.clear()
+    st.rerun()
 
 st.session_state["wide"] = st.sidebar.toggle(
     "Two-column layout",
@@ -51,13 +47,12 @@ st.session_state["wide"] = st.sidebar.toggle(
     help="Turn off for a single-column (mobile) list."
 )
 
-all_tags = sorted({t for p in projects for t in p.get("tags", [])})
+all_tags = sorted({t for p in (projects or []) for t in p.get("tags", [])})
 query = st.sidebar.text_input("Search title")
 selected = st.sidebar.multiselect("Filter by tags", options=all_tags)
 
 def render_card(p):
     col_img, col_txt = st.columns([1, 2], gap="medium")
-
     with col_img:
         img_path = ASSETS / p["image"]
         if img_path.exists():
@@ -65,13 +60,11 @@ def render_card(p):
         else:
             st.markdown(f"🖼️ *Missing image:* `{p['image']}`")
             st.caption("Place it under `assets/` with this exact filename.")
-
     with col_txt:
         st.subheader(p["title"])
         if p.get("tags"):
             st.caption(", ".join(p["tags"]))
         st.write(p.get("blurb", ""))
-
         links = p.get("links", {})
         if links:
             n = min(4, len(links))
@@ -81,10 +74,8 @@ def render_card(p):
                     st.link_button(label, url)
 
 def matches(p):
-
     if selected and not set(selected).intersection(set(p.get("tags", []))):
         return False
-
     if query:
         q = query.lower()
         text = (p["title"] + " " + p.get("blurb", "")).lower()
@@ -93,16 +84,14 @@ def matches(p):
     return True
 
 def render_showcase():
-    filtered = [p for p in projects if matches(p)]
-
+    filtered = [p for p in (projects or []) if matches(p)]
     st.title("Portfolio Showcase: Projects I'm Proud Of")
     st.markdown(
         "Hi, I'm Ralph Vincent Ta-asan — a data storyteller, strategist, and an explorer. "
         "Here’s a curated selection of the projects I’ve poured my heart and skills into, spanning data science, business intelligence, creative tech, and strategic research. "
         "Use the filters on the left to explore how I think, build, and tell stories through data."
     )
-    st.write(f"Showing **{len(filtered)}** of **{len(projects)}** projects.")
-
+    st.write(f"Showing **{len(filtered)}** of **{len(projects or [])}** projects.")
     if st.session_state.get("wide", True):
         cols = st.columns(2, gap="large")
         for i, p in enumerate(filtered):
@@ -117,12 +106,10 @@ def render_showcase():
 def render_resume():
     st.title("Electronic Résumé")
     st.caption("View inline, print directly, or download the PDF version.")
-
     if not RESUME_PATH.exists():
         st.error(f"Résumé file not found at: {RESUME_PATH}")
         st.info("Place your PDF in the assets/ folder with that exact filename.")
         return
-
     pdf_bytes = RESUME_PATH.read_bytes()
     st.download_button(
         label="Download Résumé (PDF)",
@@ -131,7 +118,6 @@ def render_resume():
         mime="application/pdf",
         use_container_width=True,
     )
-
     mode = st.radio(
         "Viewer",
         options=["Clean", "Standard"],
@@ -139,18 +125,15 @@ def render_resume():
         horizontal=True,
         label_visibility="collapsed",
     )
-
     if mode == "Clean":
         if not HAVE_PYMUPDF:
             st.info("For the clean viewer, install PyMuPDF: `pip install pymupdf`")
         else:
-
             display_px = st.slider(
                 "Résumé width",
                 min_value=600, max_value=1200, value=900, step=50,
                 help="Adjust how wide the rendered pages appear."
             )
-
             doc = fitz.open(stream=pdf_bytes, filetype="pdf")
             for page in doc:
                 pix = page.get_pixmap(matrix=fitz.Matrix(2, 2), alpha=False)
@@ -158,7 +141,6 @@ def render_resume():
                 with mid:
                     st.image(pix.tobytes("png"), width=display_px)
             return
-
     b64 = base64.b64encode(pdf_bytes).decode("utf-8")
     st.markdown(
         f"""
@@ -173,34 +155,26 @@ def render_resume():
 def render_experiential():
     st.title("Experiential Learning")
     st.caption("Volunteer work, student organization involvement, apprenticeships, field trips, special projects and employment. Upload and describe photos, job descriptions and completed projects.")
-
     if not experiences:
         st.info("Add items to `experiences.json` and images to `assets/` to populate this page.")
         return
-
     mode = st.radio("Layout", ["Feature", "Cards"], horizontal=True, label_visibility="collapsed")
-
     if mode == "Feature":
         for exp in experiences:
-
             img_path = ASSETS / exp.get("image", "")
             if img_path.exists():
                 st.image(str(img_path), use_container_width=True)
-
             st.markdown(f"## {exp.get('title','')}")
             meta = " - ".join(filter(None, [exp.get("date", ""), ", ".join(exp.get("tags", []))]))
             if meta:
                 st.caption(meta)
-
             if exp.get("lede"):
                 st.markdown(f"<p style='font-size:1.05rem;line-height:1.7'><em>{exp['lede']}</em></p>", unsafe_allow_html=True)
-
             facts = exp.get("facts", [])
             if facts:
                 with st.expander("Quick facts", expanded=True):
                     for f in facts:
                         st.markdown(f"- {f}")
-
             if exp.get("body_md"):
                 st.markdown(exp["body_md"])
             st.divider()
@@ -212,8 +186,10 @@ def render_experiential():
                 if img_path.exists():
                     st.image(str(img_path), use_container_width=True)
                 st.subheader(exp.get("title",""))
-                if exp.get("date"): st.caption(exp["date"])
-                if exp.get("lede"): st.write(exp["lede"])
+                if exp.get("date"):
+                    st.caption(exp["date"])
+                if exp.get("lede"):
+                    st.write(exp["lede"])
                 if exp.get("body_md"):
                     with st.expander("Read more"):
                         st.markdown(exp["body_md"])
@@ -221,7 +197,6 @@ def render_experiential():
 
 def render_reflections():
     st.title("*I've always loved numbers. But never quite like this.*")
-
     reflections_md = """
 I still remember the exact moment I felt something shift. It wasn’t a grand event, a medal, a recognition, or even a final exam. It was in a quiet lecture hall, the kind where most students tune out after the first hour. I had just run my very first regression. What struck me wasn’t the math; it was how the data spoke. It whispered back a pattern, a direction, a meaning. In that moment I realized that learning wasn’t just about numbers or performance; it was about listening. In many ways that small whisper from the data became the loudest voice in my entire college journey.
 
@@ -263,14 +238,12 @@ If I packed college into a capsule, it wouldn’t hold every lecture or assignme
 
 To Benilde, I have a question. It might seem strange to ask just before graduating, but how do I really be like no other? Until now, I have no clue. Is it about being our own person, as we are all made of different numbers of atoms, different numbers of brain cells, and different numbers of seconds lived in this life? Is it about being so radically different even if I’d want to find inspiration in the numbers of someone else? But maybe it’s not about being like no other but being who I want to be, even if it’s like another. Maybe it’s not about being like no other, but embracing our life’s data will never be like Taylor Swift, will never be like Barack Obama, or will never be like Victor Wembanyama. But that’s okay; I can have my own numbers in the encounters I’ve had in life, yet find a pattern to trace similarities in the lives that I want to follow. To draw similarities in the lives that inspired me. In that way, I can be myself; in that way, I can be limitless; in that way, I can stay, and in that way, I can continue loving numbers. I’ve had a million experiences in Benilde. Each and every one of those, I treasure deeply in my heart. I have lived a life loving numbers, but honestly, *I’ve never loved them quite like this*.
 """
-
     st.markdown(
         "<div style='font-size:1.05rem; line-height:1.85'>"
         + reflections_md.replace("\n\n", "<br><br>")
         + "</div>",
         unsafe_allow_html=True,
     )
-
     if SIGNATURE_PATH.exists():
         spacer, sigcol = st.columns([5, 2])
         with sigcol:
@@ -279,7 +252,6 @@ To Benilde, I have a question. It might seem strange to ask just before graduati
             st.markdown("<em>Ralph Vincent Ta-asan</em>", unsafe_allow_html=True)
             st.markdown("</div>", unsafe_allow_html=True)
     else:
-
         spacer, sigcol = st.columns([5, 2])
         with sigcol:
             st.markdown("<div style='text-align:right;'><em>Ralph Vincent Ta-asan</em></div>", unsafe_allow_html=True)
