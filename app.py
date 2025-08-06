@@ -32,14 +32,14 @@ def load_projects():
     return sorted(data, key=lambda d: d["title"].lower())
 
 @st.cache_data
-def load_experiences(path: Path, mtime: float):
-    
-    if not path.exists():
+def load_experiences():
+    xp = Path("experiences.json")
+    if not xp.exists():
         return []
-    return json.loads(path.read_text(encoding="utf-8"))
+    return json.loads(xp.read_text(encoding="utf-8"))
 
-xp = Path("experiences.json")
-experiences = load_experiences(xp, xp.stat().st_mtime if xp.exists() else 0)
+projects = load_projects()
+experiences = load_experiences()
 
 st.sidebar.title("Explore Projects")
 
