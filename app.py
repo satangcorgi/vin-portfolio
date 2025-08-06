@@ -31,12 +31,14 @@ def load_projects():
     data = json.loads(pj.read_text(encoding="utf-8"))
     return sorted(data, key=lambda d: d["title"].lower())
 
-@st.cache_data
-def load_experiences():
+@st.cache_data(ttl=60)
+def load_experiences_with_ttl():
     xp = Path("experiences.json")
     if not xp.exists():
         return []
     return json.loads(xp.read_text(encoding="utf-8"))
+
+experiences = load_experiences_with_ttl()
 
 projects = load_projects()
 experiences = load_experiences()
